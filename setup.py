@@ -11,7 +11,11 @@ module_names = [
     'SmoothBOD',
 ]
 
-flowws_modules = ['{0} = flowws_freud.{0}:{0}'.format(name) for name in module_names]
+flowws_modules = []
+for name in module_names:
+    flowws_modules.append('{0} = flowws_freud.{0}:{0}'.format(name))
+    flowws_modules.append(
+        'flowws_freud.{0} = flowws_freud.{0}:{0}'.format(name))
 
 setup(name='flowws-freud',
       author='Matthew Spellings',
