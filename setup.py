@@ -7,6 +7,7 @@ with open('flowws_freud/version.py') as version_file:
     exec(version_file.read())
 
 module_names = [
+    'LocalDensity',
     'RDF',
     'SmoothBOD',
 ]
