@@ -13,6 +13,5 @@ pipelines for scientific simulations using
 Install `flowws-freud` from source using `pip`:
 
 ```
-pip install git+https://github.com/klarh/flowws.git#egg=flowws
 pip install git+https://github.com/klarh/flowws-freud.git#egg=flowws-freud
 ```

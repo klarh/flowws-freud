@@ -3,8 +3,15 @@
 import os
 from setuptools import setup
 
-with open('flowws_freud/version.py') as version_file:
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+version_fname = os.path.join(THIS_DIR, 'flowws_freud', 'version.py')
+with open(version_fname) as version_file:
     exec(version_file.read())
+
+readme_fname = os.path.join(THIS_DIR, 'README.md')
+with open(readme_fname) as readme_file:
+    long_description = readme_file.read()
 
 module_names = [
     'LocalDensity',
@@ -36,6 +43,8 @@ setup(name='flowws-freud',
           'freud-analysis',
       ],
       license='MIT',
+      long_description=long_description,
+      long_description_content_type='text/markdown',
       packages=[
           'flowws_freud',
       ],
