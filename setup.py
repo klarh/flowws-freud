@@ -39,7 +39,7 @@ setup(name='flowws-freud',
       },
       extras_require={},
       install_requires=[
-          'flowws-analysis',
+          'flowws',
           'freud-analysis',
       ],
       license='MIT',
