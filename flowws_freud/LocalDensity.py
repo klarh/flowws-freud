@@ -20,7 +20,7 @@ class LocalDensity(flowws.Stage):
             self.arguments['r_max'],
             self.arguments['diameter'])
 
-        box = freud.box.Box.from_box(scope['box'])
+        box = freud.box.Box.from_box(scope['box'], scope.get('dimensions', 3))
         compute.compute((box, scope['position']), scope['position'])
         self.density = scope['local_density'] = compute.density
 
