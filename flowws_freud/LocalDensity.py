@@ -10,12 +10,12 @@ class LocalDensity(flowws.Stage):
             help='Number of bins to use in the histogram plot'),
         Arg('r_max', '-r', float, required=True,
             help='Maximum radial distance'),
-        Arg('diameter', '-d', float, default=1.,
-            help='Maximum radial distance'),
+        Arg('diameter', '-d', float, default=0.,
+            help='Smoothing diameter to use in the density calculation'),
     ]
 
     def run(self, scope, storage):
-        """Compute and provide the RDF"""
+        """Compute and provide the local density"""
         compute = freud.density.LocalDensity(
             self.arguments['r_max'],
             self.arguments['diameter'])
