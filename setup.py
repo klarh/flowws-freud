@@ -17,6 +17,7 @@ module_names = [
     'LocalDensity',
     'RDF',
     'SmoothBOD',
+    'Steinhardt',
 ]
 
 flowws_modules = []

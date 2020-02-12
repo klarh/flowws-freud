@@ -22,7 +22,7 @@ Modules
 =======
 
 .. automodule:: flowws_freud
-   :members: LocalDensity, RDF, SmoothBOD
+   :members: LocalDensity, RDF, SmoothBOD, Steinhardt
 
 Indices and tables
 ==================
