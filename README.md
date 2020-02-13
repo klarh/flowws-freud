@@ -10,8 +10,27 @@ pipelines for scientific simulations using
 
 ## Installation
 
-Install `flowws-freud` from source using `pip`:
+Install `flowws-freud` from PyPI:
+
+```
+pip install flowws-freud
+```
+
+Alternatively, install from source:
 
 ```
 pip install git+https://github.com/klarh/flowws-freud.git#egg=flowws-freud
+```
+
+## Documentation
+
+Browse more detailed documentation
+[online](https://flowws-freud.readthedocs.io) or build the sphinx
+documentation from source:
+
+```
+git clone https://github.com/klarh/flowws-freud
+cd flowws-freud/doc
+pip install -r requirements.txt
+make html
 ```
