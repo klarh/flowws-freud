@@ -1,6 +1,9 @@
+import collections
+
 import flowws
 from flowws import Argument as Arg
 import freud
+import numpy as np
 
 @flowws.add_stage_arguments
 class SmoothBOD(flowws.Stage):
@@ -12,7 +15,16 @@ class SmoothBOD(flowws.Stage):
             help='Use distance, rather than num_neighbors, to find bonds'),
         Arg('r_max', type=float, default=2,
             help='Maximum radial distance if use_distance is given'),
+        Arg('average', type=bool, default=False,
+            help='If True, average the BOOD'),
+        Arg('average_keys', type=[str],
+            help='List of scope keys to generate distinct series when averaging'),
     ]
+
+    def __init__(self, *args, **kwargs):
+        self._data_cache = collections.defaultdict(list)
+        self._run_cache_keys = set()
+        super().__init__(*args, **kwargs)
 
     def run(self, scope, storage):
         """Compute the bonds in the system"""
@@ -28,13 +40,24 @@ class SmoothBOD(flowws.Stage):
 
         nlist = aq.query(positions, args).toNeighborList()
         rijs = positions[nlist.point_indices] - positions[nlist.query_point_indices]
-        self.bonds = box.wrap(rijs)
+        bonds = box.wrap(rijs)
+
+        key_names = self.arguments.get('average_keys', [])
+        self._last_data_key = tuple(scope[name] for name in key_names)
+        if self.arguments['average']:
+            if scope.get('cache_key', object()) not in self._run_cache_keys:
+                self._data_cache[self._last_data_key].append(bonds)
+            if 'cache_key' in scope:
+                self._run_cache_keys.add(scope['cache_key'])
+        else:
+            self._data_cache[self._last_data_key] = [bonds]
 
         scope.setdefault('visuals', []).append(self)
 
     def draw_plato(self):
         import plato, plato.draw as draw
-        prim = draw.SpherePoints(points=self.bonds, on_surface=True)
+        bonds = np.concatenate(self._data_cache[self._last_data_key], axis=0)
+        prim = draw.SpherePoints(points=bonds, on_surface=True)
         scene = draw.Scene(prim, size=(3, 3), pixel_scale=100,
                            features=dict(additive_rendering=dict(invert=True)))
         return scene
