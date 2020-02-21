@@ -14,6 +14,8 @@ class Steinhardt(flowws.Stage):
             help='Maximum radial distance to consider for neighbors (if given)'),
         Arg('num_neighbors', '-n', int,
             help='Number of neighbors to use; overrules r_max if given'),
+        Arg('r_guess', None, float, 2,
+            help='Characteristic distance for finding num_neighbors neighboring particles'),
     ]
 
     def run(self, scope, storage):
@@ -24,7 +26,7 @@ class Steinhardt(flowws.Stage):
         query_options = dict(exclude_ii=True)
         if 'num_neighbors' in self.arguments:
             query_options['num_neighbors'] = self.arguments['num_neighbors']
-            query_options['r_guess'] = self.arguments.get('r_max', None)
+            query_options['r_guess'] = self.arguments['r_guess']
         else:
             query_options['r_max'] = self.arguments.get('r_max', None)
         compute.compute((box, scope['position']), query_options)
