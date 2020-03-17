@@ -22,7 +22,13 @@ Alternatively, install from source:
 pip install git+https://github.com/klarh/flowws-freud.git#egg=flowws-freud
 ```
 
-## Documentation
+## Examples
+
+Consult the
+[flowws-examples](https://github.com/klarh/flowws-examples) project
+for examples using `flowws-freud` modules.
+
+## API Documentation
 
 Browse more detailed documentation
 [online](https://flowws-freud.readthedocs.io) or build the sphinx
