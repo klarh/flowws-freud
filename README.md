@@ -1,3 +1,4 @@
+[![ReadTheDocs](https://img.shields.io/readthedocs/flowws-freud.svg?style=flat)](https://flowws-freud.readthedocs.io/en/latest/)
 
 ## Introduction
 
@@ -6,7 +7,11 @@ pipelines for scientific simulations using
 [freud](https://freud.readthedocs.io).
 
 `flowws-freud` is being developed in conjunction with
-[flowws](https://github.com/klarh/flowws).
+[flowws](https://github.com/klarh/flowws) and
+[flowws-analysis](https://github.com/klarh/flowws-analysis). See their
+documentation for an overview of how to use the modules found here and
+other useful modules for analysis and visualization of simulation
+data, respectively.
 
 ## Installation
 
