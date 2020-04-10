@@ -53,6 +53,7 @@ class SmoothBOD(flowws.Stage):
             self._data_cache[self._last_data_key] = [bonds]
 
         scope.setdefault('visuals', []).append(self)
+        scope.setdefault('visual_link_rotation', []).append(self)
 
     def draw_plato(self):
         import plato, plato.draw as draw
