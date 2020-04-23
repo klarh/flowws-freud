@@ -28,7 +28,7 @@ class LocalDensity(flowws.Stage):
         scope.setdefault('visuals', []).append(self)
 
     def draw_matplotlib(self, figure):
-        ax = figure.add_subplot()
+        ax = figure.add_subplot(111)
         ax.hist(self.density, bins=self.arguments['histogram_bins'],
                 density=True)
         ax.set_xlabel('Density')

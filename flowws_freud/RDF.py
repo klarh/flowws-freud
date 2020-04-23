@@ -27,7 +27,7 @@ class RDF(flowws.Stage):
         scope.setdefault('visuals', []).append(self)
 
     def draw_matplotlib(self, figure):
-        ax = figure.add_subplot()
+        ax = figure.add_subplot(111)
         ax.plot(self.r, self.rdf)
         ax.set_xlabel('r')
         ax.set_ylabel('RDF')
