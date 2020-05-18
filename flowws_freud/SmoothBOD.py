@@ -15,6 +15,8 @@ class SmoothBOD(flowws.Stage):
             help='Use distance, rather than num_neighbors, to find bonds'),
         Arg('r_max', type=float, default=2,
             help='Maximum radial distance if use_distance is given'),
+        Arg('on_surface', type=bool, default=True,
+            help='Restrict the BOOD to be on the surface of a sphere'),
         Arg('average', type=bool, default=False,
             help='If True, average the BOOD'),
         Arg('average_keys', type=[str],
@@ -58,7 +60,7 @@ class SmoothBOD(flowws.Stage):
     def draw_plato(self):
         import plato, plato.draw as draw
         bonds = np.concatenate(self._data_cache[self._last_data_key], axis=0)
-        prim = draw.SpherePoints(points=bonds, on_surface=True)
+        prim = draw.SpherePoints(points=bonds, on_surface=self.arguments['on_surface'])
         scene = draw.Scene(prim, size=(3, 3), pixel_scale=100,
                            features=dict(additive_rendering=dict(invert=True)))
         return scene
