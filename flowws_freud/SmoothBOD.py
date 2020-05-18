@@ -54,6 +54,7 @@ class SmoothBOD(flowws.Stage):
         else:
             self._data_cache[self._last_data_key] = [bonds]
 
+        scope['SmoothBOD.bonds'] = bonds
         scope.setdefault('visuals', []).append(self)
         scope.setdefault('visual_link_rotation', []).append(self)
 
