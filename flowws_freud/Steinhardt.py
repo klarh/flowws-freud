@@ -41,5 +41,5 @@ class Steinhardt(flowws.Stage):
         ax = figure.add_subplot(111)
         ax.hist(self.steinhardt, bins=self.arguments['histogram_bins'],
                 density=True)
-        ax.set_xlabel('$Q_{}$'.format(self.arguments['l']))
+        ax.set_xlabel('$Q_{{{}}}$'.format(self.arguments['l']))
         ax.set_ylabel('Probability')
