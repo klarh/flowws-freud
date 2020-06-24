@@ -1,3 +1,14 @@
+# v0.3 - 2020/06/24
+
+## Added
+
+- `on_surface` argument in SmoothBOD
+- Ability to draw bonds in RDF
+
+## Fixed
+
+- x-label axis in Steinhardt
+
 # v0.2 - 2020/04/23
 
 ## Added
