@@ -1,3 +1,5 @@
+import bisect
+
 import flowws
 from flowws import Argument as Arg
 import freud
@@ -37,21 +39,29 @@ class RDF(flowws.Stage):
             query = system.query(scope['position'], query_args)
             nlist = query.toNeighborList()
 
-            start_points = scope['position'][nlist.query_point_indices]
-            bonds = (scope['position'][nlist.point_indices] - start_points)
-            bonds = box.wrap(bonds)
-            end_points = start_points + bonds
+            if len(nlist):
+                start_points = scope['position'][nlist.query_point_indices]
+                bonds = (scope['position'][nlist.point_indices] - start_points)
+                bonds = box.wrap(bonds)
+                end_points = start_points + bonds
 
-            prim = plato.draw.Lines(
-                start_points=start_points, end_points=end_points,
-                widths=self.arguments['bond_width'], colors=(.1, .1, .1, 1),
-                cap_mode=1)
-            scope.setdefault('plato_primitives', []).append(prim)
+                prim = plato.draw.Lines(
+                    start_points=start_points, end_points=end_points,
+                    widths=self.arguments['bond_width'], colors=(.1, .1, .1, 1),
+                    cap_mode=1)
+                scope.setdefault('plato_primitives', []).append(prim)
 
         scope.setdefault('visuals', []).append(self)
 
     def draw_matplotlib(self, figure):
         ax = figure.add_subplot(111)
         ax.plot(self.r, self.rdf)
+
+        if self.arguments['bond_max']:
+            i = bisect.bisect_right(self.r, self.arguments['bond_max'])
+            ax.fill_between(self.r[:i], self.rdf[:i], alpha=.5)
+            ax.vlines(
+                self.arguments['bond_max'], 0, max(.1, self.rdf[i]), color='k')
+
         ax.set_xlabel('r')
         ax.set_ylabel('RDF')
