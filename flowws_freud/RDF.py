@@ -26,7 +26,7 @@ class RDF(flowws.Stage):
             self.arguments['bins'], self.arguments['r_max'],
             self.arguments.get('r_min', 0))
 
-        box = freud.box.Box.from_box(scope['box'])
+        box = freud.box.Box.from_box(scope['box'], scope.get('dimensions', 3))
         system = freud.locality.AABBQuery(box, scope['position'])
         compute.compute(system)
         self.r, self.rdf = compute.bin_centers, compute.rdf
