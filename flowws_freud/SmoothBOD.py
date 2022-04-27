@@ -41,7 +41,7 @@ def fit_D(qs, lmax, seed=13):
 OptimizeResult = collections.namedtuple('OptimizeResult', ['op', 'q', 'sphs', 'history_best', 'history_25'])
 
 def optimize_rotation(points, lmax, rotations=32, theta_min=1e-3, theta_max=np.pi/2,
-                      max_steps=128, seed=13, patience=64, diffusive=False,
+                      max_steps=128, seed=13, patience=64, mode='parallel',
                       initial_rotation=None, normalize_every=32):
     import fsph
     import rowan
@@ -95,24 +95,31 @@ def optimize_rotation(points, lmax, rotations=32, theta_min=1e-3, theta_max=np.p
         # evaluate
         ops = get_op(sphs)
         # sort
-        if diffusive:
+        if mode == 'parallel':
+            sortidx = np.argsort(-ops)
+            qaccums = qaccums[sortidx]
+            sphs = sphs[sortidx]
+            best_i = 0
+        elif mode == 'diffusive':
             perm = rng.permutation(rotations)
             qaccums = qaccums[perm]
             sphs = sphs[perm]
             ops = ops[perm]
             sortidx = np.argsort(-ops)
-        else:
+            best_i = sortidx[0]
+        elif mode == 'local':
             sortidx = np.argsort(-ops)
-            qaccums = qaccums[sortidx]
-            sphs = sphs[sortidx]
+            qaccums[:] = qaccums[sortidx[0]]
+            sphs[:] = sphs[sortidx[0]]
+            best_i = 0
+        else:
+            raise NotImplementedError(mode)
 
-        best_i = sortidx[0] if diffusive else 0
-        best_op = ops[sortidx[0]]
-        history_best.append(best_op)
+        history_best.append(ops[sortidx[0]])
         history_25.append(np.mean(ops[sortidx[:len(sortidx)//4]]))
-        if best[0] < best_op:
+        if best.op < history_best[-1]:
             best = OptimizeResult(
-                best_op, qaccums[best_i], sphs[best_i], history_best, history_25)
+                history_best[-1], qaccums[best_i], sphs[best_i], history_best, history_25)
             last_improvement = step
         elif step - last_improvement > patience:
             break
@@ -179,8 +186,9 @@ class SmoothBOD(flowws.Stage):
             if self.auto_rotation is not None:
                 kwargs['theta_min'] = 1e-5
                 kwargs['theta_max'] = np.pi/16
-                kwargs['diffusive'] = True
+                kwargs['mode'] = 'local'
                 kwargs['initial_rotation'] = self.auto_rotation
+                kwargs['patience'] = 16
             self.auto_rotation = optimize_rotation(
                 bonds, self.arguments['auto_rotate_lmax'], **kwargs).q
             scope['rotation'] = self.auto_rotation
